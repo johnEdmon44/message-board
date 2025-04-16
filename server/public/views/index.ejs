@@ -6,8 +6,13 @@
   <title>Home</title>
 </head>
 <body>
-   <%- include("./partials/navbar.ejs") %>
+    <%- include("./partials/navbar.ejs") %>
 
+    <ul>
+      <% usernames.forEach(user => { %>
+        <li><%= user.username %></li>
+      <% }); %>   
+    </ul>
   <h1>Hello</h1>
 </body>
 </html>
