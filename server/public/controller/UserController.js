@@ -1,4 +1,5 @@
 const { getUsernames, createUser, getUser } = require("../db/queries");
+const bcrypt = require("bcryptjs");
 
 
 async function getUserList(req, res) {
@@ -15,11 +16,12 @@ async function createUserGet(req, res) {
   res.render("signup");
 }
 
-
+// SIGNUP
 async function createUserPost(req, res) {
-  const { username, password } = req.body;
   try {
-    await createUser( username, password);
+    const { username, password } = req.body;
+    const hashed = await bcrypt.hash(password, 10);
+    await createUser( username, hashed);
     res.redirect("/login")
   } catch (err) {
     throw err;

@@ -1,7 +1,7 @@
 const pool = require("./pool");
 
 async function createUser( username, password) {
-  await pool.query("INSERT INTO users ( username, password) VALUES ($1, crypt($2, gen_salt('bf', 10)))", [username, password]);
+  await pool.query("INSERT INTO users ( username, password) VALUES ($1, $2)", [username, password]);
 }
 
 //get user list
