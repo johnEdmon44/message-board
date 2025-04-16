@@ -10,7 +10,15 @@ async function getUsernames() {
   return rows;
 }
 
+// get user or login
+async function getUser(username, password) {
+  const { rows } = await pool.query("SELECT id, username FROM users WHERE username = $1 AND password = crypt($2, password)", [username, password]);
+  return rows[0];
+}
+
+
 module.exports = {
   createUser,
   getUsernames,
+  getUser
 }

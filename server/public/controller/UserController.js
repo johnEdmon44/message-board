@@ -1,4 +1,4 @@
-const { getUsernames, createUser } = require("../db/queries");
+const { getUsernames, createUser, getUser } = require("../db/queries");
 
 
 async function getUserList(req, res) {
@@ -27,8 +27,21 @@ async function createUserPost(req, res) {
 }
 
 
+async function userLoginPost(req, res) {
+  const { username, password } = req.body;
+  try {
+    const user = await getUser(username, password);
+    res.render("user", { user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+}
+
+
 module.exports = {
   getUserList,
   createUserPost,
-  createUserGet
+  createUserGet,
+  userLoginPost
 }
