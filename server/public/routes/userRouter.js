@@ -13,4 +13,6 @@ userRouter.get("/login", userController.userLoginGet);
 
 userRouter.get("/user", userController.userPageGet);
 userRouter.get("/logout", userController.userLogoutGet);
+
+userRouter.post("/delete/:id", userController.userDeletePost);
 module.exports = userRouter;

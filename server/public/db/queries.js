@@ -16,9 +16,15 @@ async function getUser(username) {
   return rows[0];
 }
 
+async function deleteUser(id) {
+  const { rows } = await pool.query("DELETE FROM users WHERE id = $1", [id]);
+  return rows;
+}
+
 
 module.exports = {
   createUser,
   getUsernames,
-  getUser
+  getUser,
+  deleteUser
 }

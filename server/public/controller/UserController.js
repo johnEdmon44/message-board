@@ -1,4 +1,4 @@
-const { getUsernames, createUser, getUser } = require("../db/queries");
+const { getUsernames, createUser, getUser, deleteUser } = require("../db/queries");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
@@ -62,6 +62,16 @@ async function userLogoutGet(req, res, next){
   res.redirect("login");
 }
 
+async function userDeletePost(req, res) {
+  try {
+    const { id } = req.params;
+    await deleteUser(id);
+    res.render("login");
+  } catch(error) {
+    throw error
+  }
+}
+
 module.exports = {
   getUserList,
   createUserPost,
@@ -70,5 +80,6 @@ module.exports = {
   userLogoutPost,
   userLoginGet,
   userPageGet,
-  userLogoutGet
+  userLogoutGet,
+  userDeletePost
 }
