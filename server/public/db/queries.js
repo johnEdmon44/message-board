@@ -11,8 +11,8 @@ async function getUsernames() {
 }
 
 // get user or login
-async function getUser(username, password) {
-  const { rows } = await pool.query("SELECT id, username FROM users WHERE username = $1 AND password = crypt($2, password)", [username, password]);
+async function getUser(username) {
+  const { rows } = await pool.query("SELECT id, username FROM users WHERE username = $1", [username]);
   return rows[0];
 }
 
