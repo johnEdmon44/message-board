@@ -1,6 +1,7 @@
 {
   "name": "message-board",
   "version": "1.0.0",
+  "proxy": "http://localhost:3400/",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/johnEdmon44/message-board#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.1",

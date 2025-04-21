@@ -5,6 +5,13 @@ const userRouter = require("./public/routes/userRouter");
 const passport = require("passport");
 const session = require("express-session");
 require("./public/db/passport-config");
+const cors = require("cors");
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
 
 app.use(express.urlencoded({ extended: true }));
 
