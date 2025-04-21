@@ -1,21 +1,12 @@
-import { useEffect } from 'react';
 import './App.css';
-import axios from "axios";
+import { Link } from 'react-router-dom';
 
 function App() {
-
-  const fetchApi = async () => {
-    const response = await axios.get("http://localhost:3400/");
-    console.log(response)
-  }
-
-  useEffect(() => {
-    fetchApi();
-  }, [])
 
   return (
     <>
       <h1>Hello</h1>
+      <Link to={"/UserList"}>Users</Link>
     </>
   )
 }
