@@ -20,7 +20,7 @@ function Signup() {
       );
 
       if(response.status === 201) {
-        navigate("/");
+        navigate("/Login");
       }
     } catch(error) {
       console.log(error)

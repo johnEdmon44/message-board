@@ -35,9 +35,24 @@ async function userLoginGet(req, res) {
 }
 
 async function userLoginPost(req, res, next) {
-  passport.authenticate('local', {
-    successRedirect: ("user"),
-    failureRedirect: ("login"),
+  passport.authenticate('local', (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: "Authentication error" });
+    }
+    
+    if (!user) {
+      return res.status(401).json({ error: info.message || "Login failed" });
+    }
+    req.login(user, (err) => {
+      if(err) {
+        return res.status(500).json({ error: "Error session" });
+      }
+
+      return res.status(200).json({
+        message: "Login success",
+        user: { id: user.id, username: user.username }
+      });
+    });
   })(req, res, next)
 }
 
@@ -51,7 +66,7 @@ async function userLogoutPost(req, res) {
 }
 
 async function userPageGet(req, res) {
-  res.render("user", { user: req.user });
+  res.json({ user: req.user });
 }
 
 
