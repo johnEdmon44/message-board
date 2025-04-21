@@ -22,9 +22,10 @@ async function createUserPost(req, res) {
     const { username, password } = req.body;
     const hashed = await bcrypt.hash(password, 10);
     await createUser( username, hashed);
-    res.redirect("/login")
+    res.status(201).json({ message: "User created successfully" });
   } catch (err) {
-    throw err;
+    console.error("Error creating user:", err);
+    res.status(500).json({ error: "Failed to create user", details: err.message });
   }
 }
 

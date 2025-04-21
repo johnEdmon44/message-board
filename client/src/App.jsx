@@ -7,6 +7,7 @@ function App() {
     <>
       <h1>Hello</h1>
       <Link to={"/UserList"}>Users</Link>
+      <Link to={"/Signup"}>Signup</Link>
     </>
   )
 }
