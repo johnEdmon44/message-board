@@ -58,11 +58,9 @@ async function userLoginPost(req, res, next) {
 
 async function userLogoutPost(req, res) {
   req.logout((err) => {
-    if(err) {
-      return next(err);
-    }
-    res.redirect("/");
-  })
+    if(err) return next(err);
+    res.status(200).json({ message: "Logout successful" });
+  });
 }
 
 async function userPageGet(req, res) {
