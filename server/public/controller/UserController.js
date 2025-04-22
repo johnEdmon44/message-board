@@ -79,7 +79,7 @@ async function userDeletePost(req, res) {
   try {
     const { id } = req.params;
     await deleteUser(id);
-    res.render("login");
+    res.status(200).json({ message: "Delete success" });
   } catch(error) {
     throw error
   }
