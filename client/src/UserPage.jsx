@@ -1,21 +1,35 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { fetchUser } from "./fetchUser";
+import { useNavigate } from "react-router-dom";
 
 
 function UserPage () {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
       const currentUser = await fetchUser();
-      setUser(currentUser)
+      console.log(currentUser)
+      setUser(currentUser);
     }
     getUser();
   }, [])
 
-  const handleDeleteAccount = () => {
-    console.log(user.id)
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axios.post(`http://localhost:3400/delete/${user.id}`, 
+        {},
+        { withCredentials: true }
+      )
+      if(response.status === 200) {
+        navigate("/");
+      }
+    } catch(error) {
+      console.log(error);
+    }
   }
 
 
