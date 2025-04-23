@@ -1,4 +1,4 @@
-const { getUsernames, createUser, getUser, deleteUser } = require("../db/queries");
+const { getUsernames, createUser, getUser, deleteUser, updateUsername } = require("../db/queries");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
@@ -85,6 +85,17 @@ async function userDeletePost(req, res) {
   }
 }
 
+async function updateUserPost(req, res) {
+  try {
+    const { username } = req.body;
+    const id = req.user.id
+    await updateUsername(id, username);
+    res.status(200).json({ message: "Update success" });
+  } catch(error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getUserList,
   createUserPost,
@@ -94,5 +105,6 @@ module.exports = {
   userLoginGet,
   userPageGet,
   userLogoutGet,
-  userDeletePost
+  userDeletePost,
+  updateUserPost
 }

@@ -15,4 +15,6 @@ userRouter.get("/user", userController.userPageGet);
 userRouter.get("/logout", userController.userLogoutGet);
 
 userRouter.post("/delete/:id", userController.userDeletePost);
+
+userRouter.post("/updateUsername", userController.updateUserPost);
 module.exports = userRouter;
