@@ -17,4 +17,7 @@ userRouter.get("/logout", userController.userLogoutGet);
 userRouter.post("/delete/:id", userController.userDeletePost);
 
 userRouter.post("/updateUsername", userController.updateUserPost);
+
+userRouter.post("/postMessage", userController.userMessagePost);
+userRouter.get("/messages", userController.messagesGet);
 module.exports = userRouter;

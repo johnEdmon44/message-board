@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { fetchUser } from "./fetchUser";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 function UserPage () {
@@ -12,7 +13,6 @@ function UserPage () {
   useEffect(() => {
     const getUser = async () => {
       const currentUser = await fetchUser();
-      console.log(currentUser)
       setUser(currentUser);
     }
     getUser();
@@ -55,6 +55,7 @@ function UserPage () {
   return (
     <section>
       <h1>Hello, { user ? user.username : "Anon" }</h1>
+      <Link to={"/"}>HOme</Link>
       <form onSubmit={handleUpdateUsername}>
         <label htmlFor="username">Username: </label>
         <input id="username" name="username" type="text" value={updatedUsername} onChange={(e) => setUdatedUsername(e.target.value)} required></input>

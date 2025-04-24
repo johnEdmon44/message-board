@@ -1,4 +1,4 @@
-const { getUsernames, createUser, getUser, deleteUser, updateUsername } = require("../db/queries");
+const { getUsernames, createUser, getUser, deleteUser, updateUsername, userMessage, messages } = require("../db/queries");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
@@ -96,6 +96,28 @@ async function updateUserPost(req, res) {
   }
 }
 
+async function userMessagePost(req, res) {
+  try {
+    const { message } = req.body;
+    const  user_id  = req.user.id;
+
+    await userMessage(user_id, message);
+    res.status(200).json({ message: "Message post success" });
+  } catch(error) {
+    throw error;
+  }
+}
+
+async function messagesGet(req, res) {
+  try {
+    const allMessages = await messages();
+    res.status(200).json({ messages: allMessages });
+  } catch(error) {
+    res.status(500).json({ error: "Failed to fetch messages" });
+  }
+}
+
+
 module.exports = {
   getUserList,
   createUserPost,
@@ -106,5 +128,7 @@ module.exports = {
   userPageGet,
   userLogoutGet,
   userDeletePost,
-  updateUserPost
+  updateUserPost,
+  userMessagePost,
+  messagesGet
 }

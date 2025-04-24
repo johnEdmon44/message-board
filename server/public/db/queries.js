@@ -26,11 +26,23 @@ async function updateUsername(id, username) {
   return rows[0]
 }
 
+async function userMessage(user_id, message) {
+  const { rows } = await pool.query("INSERT INTO messages (user_id, message) VALUES ($1, $2)", [user_id, message]);
+  return rows[0];
+}
+
+async function messages() {
+  const { rows } = await pool.query("SELECT username, message, messages.id, date FROM users JOIN messages ON users.id = messages.user_id LIMIT 15");
+  return rows;
+}
+
 
 module.exports = {
   createUser,
   getUsernames,
   getUser,
   deleteUser,
-  updateUsername
+  updateUsername,
+  userMessage,
+  messages
 }
