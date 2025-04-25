@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 
 
 function MessagePost({ onSubmitMessage }) {
   const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-     await onSubmitMessage(message);
-    setMessage("");
+    startTransition( () => {
+      onSubmitMessage(message);
+      setMessage("");
+    });
   }
 
   return (
@@ -23,7 +26,7 @@ function MessagePost({ onSubmitMessage }) {
           required
         />
 
-        <button type="submit">Submit</button>
+        <button type="submit">{isPending ? "Sending" : "Submit"}</button>
       </form>
     </div>
   )

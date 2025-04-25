@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useOptimistic, useState } from 'react';
 import './App.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,7 +10,19 @@ function App() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
-  const [messageQ, setMessageQ] = useState([]);
+  const [optimisticMessages, addOptimisticMessages] = useOptimistic(
+    messages,
+    (currentMessages, newMessage) => [
+      ...currentMessages,
+      {
+        id: Date.now(),
+        username: user.username,
+        message: newMessage,
+        date: new Date().toISOString(),
+        optimistic: true
+      } 
+    ] 
+  );
 
   const fetchMessages = async () => {
     try {
@@ -21,40 +33,6 @@ function App() {
     }
   }
 
-  const handlePostMessage = async (text) => {
-    const tempId = Date.now();
-    const newDate = new Date();
-  
-    // Wait 1 second before inserting optimistic message
-    setTimeout(() => {
-      const optimisticMessage = {
-        id: tempId,
-        username: user.username,
-        message: text,
-        date: newDate.toISOString(),
-        pending: true
-      };
-      setMessages(prev => [...prev, optimisticMessage]);
-      setMessageQ(prev => [...prev, tempId]);
-    }, 1000); // ⏱️ delay for realism
-  
-    try {
-      const response = await axios.post("http://localhost:3400/postMessage", { message: text }, { withCredentials: true });
-      const savedMessage = response.data.message;
-  
-      setMessages(prev =>
-        prev.map(msg => msg.id === tempId ? savedMessage : msg)
-      );
-    } catch (error) {
-      console.log(error);
-      setMessages(prev => prev.filter(msg => msg.id !== tempId));
-      alert("Failed to send message.");
-    } finally {
-      setMessageQ(prev => prev.filter(id => id !== tempId));
-    }
-  };
-  
-
   useEffect(() => {
     const getUser = async () => {
       const currentUser = await fetchUser();
@@ -62,7 +40,18 @@ function App() {
     }
     getUser();
     fetchMessages();
-  }, [])
+  }, []);
+
+
+  const handlePostMessage = async (newMessage) => {
+    addOptimisticMessages(newMessage);
+    try {
+      await axios.post("http://localhost:3400/postMessage",{ message: newMessage }, { withCredentials:true });
+      fetchMessages();
+    } catch(error) {
+      console.log(error)
+    }
+  };
 
 
   const handleLogout = async () => {
@@ -91,13 +80,14 @@ function App() {
       )}
       <ul>
 
-      {messages.map((message) => (
-        <li key={message.id || `${message.username}-${message.date}`}>
+      {optimisticMessages.map((message) => (
+        <li key={message.id}>
           <p>{message.username}</p>
           <p>{message.message}</p>
-          <FormatTime date={message.date}></FormatTime>
+          <FormatTime date={message.date} />
+          {message.optimistic && <span> (Sending...)</span>}
         </li>
-      ))}  
+      ))}
       </ul>
   
       <MessagePost onSubmitMessage={handlePostMessage} />
