@@ -15,7 +15,7 @@ function App() {
     (currentMessages, newMessage) => [
       ...currentMessages,
       {
-        id: Date.now(),
+        id: Date.now(),  
         username: user.username,
         message: newMessage,
         date: new Date().toISOString(),
@@ -64,6 +64,15 @@ function App() {
     }
   }
 
+  const handleDeleteMessage = async (message) => {
+    try {
+      await axios.delete(`http://localhost:3400/deleteMessage/${message}`,{} , { withCredentials: true });
+      fetchMessages();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <main>
       <Link to={"/UserList"}>Users</Link>
@@ -86,6 +95,14 @@ function App() {
           <p>{message.message}</p>
           <FormatTime date={message.date} />
           {message.optimistic && <span> (Sending...)</span>}
+          {console.log(user?.username)}
+
+          {user?.username === message.username ? (
+            <div>
+              <button>Edit</button>
+              <button onClick={() => handleDeleteMessage(message.id)}>Delete</button>
+            </div>
+          ) : ""}
         </li>
       ))}
       </ul>

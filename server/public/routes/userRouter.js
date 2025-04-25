@@ -20,4 +20,6 @@ userRouter.post("/updateUsername", userController.updateUserPost);
 
 userRouter.post("/postMessage", userController.userMessagePost);
 userRouter.get("/messages", userController.messagesGet);
+
+userRouter.delete("/deleteMessage/:id", userController.deleteMessagePost);
 module.exports = userRouter;
