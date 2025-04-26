@@ -2,8 +2,8 @@ import { useState, useTransition } from "react";
 
 
 
-function MessagePost({ onSubmitMessage }) {
-  const [message, setMessage] = useState("");
+function MessagePost({ onSubmitMessage, value = ""}) {
+  const [message, setMessage] = useState(value);
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e) => {

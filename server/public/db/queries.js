@@ -41,6 +41,11 @@ async function deleteMessage(id) {
   return rows;
 }
 
+async function editMessage(id, newMessage) {
+  const { rows } = await pool.query("UPDATE messages SET message = $1 WHERE id = $2", [newMessage, id]);
+  return rows[0];
+}
+
 
 module.exports = {
   createUser,
@@ -50,5 +55,6 @@ module.exports = {
   updateUsername,
   userMessage,
   messages,
-  deleteMessage
+  deleteMessage,
+  editMessage
 }

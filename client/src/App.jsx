@@ -10,6 +10,8 @@ function App() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
+  const [edit, setEdit] = useState(false);
+  const [editId, setEditId] = useState("");
   const [optimisticMessages, addOptimisticMessages] = useOptimistic(
     messages,
     (currentMessages, newMessage) => [
@@ -46,8 +48,13 @@ function App() {
   const handlePostMessage = async (newMessage) => {
     addOptimisticMessages(newMessage);
     try {
-      await axios.post("http://localhost:3400/postMessage",{ message: newMessage }, { withCredentials:true });
+      if(edit) {
+        await axios.post(`http://localhost:3400/editMessage/${editId}`,{ message: newMessage }, { withCredentials: true });
+      } else {
+        await axios.post("http://localhost:3400/postMessage",{ message: newMessage }, { withCredentials:true });
+      }
       fetchMessages();
+      setEdit(false);
     } catch(error) {
       console.log(error)
     }
@@ -73,6 +80,11 @@ function App() {
     }
   }
 
+  const handleEdit = async (message_id) => {
+    setEditId(message_id);
+    setEdit(true);
+  }
+
   return (
     <main>
       <Link to={"/UserList"}>Users</Link>
@@ -92,14 +104,14 @@ function App() {
       {optimisticMessages.map((message) => (
         <li key={message.id}>
           <p>{message.username}</p>
-          <p>{message.message}</p>
+          {edit && editId === message.id ? <MessagePost onSubmitMessage={handlePostMessage} value={message.message}/> : <p>{message.message}</p>}
           <FormatTime date={message.date} />
           {message.optimistic && <span> (Sending...)</span>}
           {console.log(user?.username)}
 
           {user?.username === message.username ? (
             <div>
-              <button>Edit</button>
+              <button onClick={() => handleEdit(message.id)}>Edit</button>
               <button onClick={() => handleDeleteMessage(message.id)}>Delete</button>
             </div>
           ) : ""}

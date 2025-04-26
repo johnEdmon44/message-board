@@ -22,4 +22,5 @@ userRouter.post("/postMessage", userController.userMessagePost);
 userRouter.get("/messages", userController.messagesGet);
 
 userRouter.delete("/deleteMessage/:id", userController.deleteMessagePost);
+userRouter.post("/editMessage/:id", userController.editMessagePost);
 module.exports = userRouter;
