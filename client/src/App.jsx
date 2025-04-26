@@ -104,6 +104,7 @@ function App() {
       {optimisticMessages.map((message) => (
         <li key={message.id}>
           <p>{message.username}</p>
+          <p>{message.edited ? "Edited" : ""}</p>
           {edit && editId === message.id ? <MessagePost onSubmitMessage={handlePostMessage} value={message.message}/> : <p>{message.message}</p>}
           <FormatTime date={message.date} />
           {message.optimistic && <span> (Sending...)</span>}

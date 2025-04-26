@@ -32,7 +32,7 @@ async function userMessage(user_id, message) {
 }
 
 async function messages() {
-  const { rows } = await pool.query("SELECT username, message, messages.id, date FROM users JOIN messages ON users.id = messages.user_id ORDER BY date ASC LIMIT 15 ");
+  const { rows } = await pool.query("SELECT username, message, messages.id, edited, date FROM users JOIN messages ON users.id = messages.user_id ORDER BY date ASC LIMIT 15 ");
   return rows;
 }
 
@@ -42,7 +42,7 @@ async function deleteMessage(id) {
 }
 
 async function editMessage(id, newMessage) {
-  const { rows } = await pool.query("UPDATE messages SET message = $1 WHERE id = $2", [newMessage, id]);
+  const { rows } = await pool.query("UPDATE messages SET message = $1, edited = TRUE WHERE id = $2", [newMessage, id]);
   return rows[0];
 }
 
