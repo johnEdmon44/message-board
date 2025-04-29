@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ReactPaginate from 'react-paginate';
 import FormatTime from "./util/formatTime";
+import { useSearchParams } from "react-router-dom";
 
 function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user }) {
   return (
@@ -26,15 +27,16 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
 }
 
 function PaginatedItems({ messages, messagesPerPage, handleEdit, handleDeleteMessage, user }) {
-  const [messageOffset, setMessageOffset] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get('page')) || 1;
 
-  const endOffset = messageOffset + messagesPerPage;
-  const currentMessages = messages.slice(messageOffset, endOffset);
+  const messageOffset = (currentPage - 1) * messagesPerPage;
+  const currentMessages = messages.slice(messageOffset, messageOffset + messagesPerPage);
   const pageCount = Math.ceil(messages.length / messagesPerPage);
 
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * messagesPerPage) % messages.length;
-    setMessageOffset(newOffset);
+    const selectedPage = event.selected + 1;
+    setSearchParams({ page: selectedPage })
   };
 
   return (

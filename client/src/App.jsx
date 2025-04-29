@@ -105,7 +105,7 @@ function App() {
 
 
       <PaginatedItems 
-        messagesPerPage={15}
+        messagesPerPage={1}
         messages={optimisticMessages}
         handleEdit={handleEdit}
         handleDeleteMessage={handleDeleteMessage}
