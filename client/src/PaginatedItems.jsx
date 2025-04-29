@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReactPaginate from 'react-paginate';
-
+import FormatTime from "./util/formatTime";
 
 function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user }) {
   return (
@@ -11,7 +11,7 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
             <p>{message.username}</p>
             <p>{message.edited ? "Edited" : ""}</p>
             <p>{message.message}</p>
-            <p>{new Date(message.date).toLocaleString()}</p>
+            <p><FormatTime date={message.date} /></p>
             {message.optimistic && <span> (Sending...)</span>}
             {user?.username === message.username && (
               <div>
