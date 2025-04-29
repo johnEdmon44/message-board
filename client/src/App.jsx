@@ -5,6 +5,7 @@ import axios from 'axios';
 import { fetchUser } from "./fetchUser";
 import MessagePost from './assets/MessagePost';
 import FormatTime from './util/formatTime';
+import PaginatedItems from './PaginatedItems';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -88,6 +89,8 @@ function App() {
   return (
     <main>
       <Link to={"/UserList"}>Users</Link>
+
+
       {user ? (
         <>
           <button onClick={handleLogout}>Logout</button>
@@ -99,29 +102,18 @@ function App() {
           <Link to={"/Signup"}>Signup</Link>        
         </>
       )}
-      <ul>
 
-      {optimisticMessages.map((message) => (
-        <li key={message.id}>
-          <p>{message.username}</p>
-          <p>{message.edited ? "Edited" : ""}</p>
-          {edit && editId === message.id ? <MessagePost onSubmitMessage={handlePostMessage} value={message.message}/> : <p>{message.message}</p>}
-          <FormatTime date={message.date} />
-          {message.optimistic && <span> (Sending...)</span>}
-          {console.log(user?.username)}
 
-          {user?.username === message.username ? (
-            <div>
-              <button onClick={() => handleEdit(message.id)}>Edit</button>
-              <button onClick={() => handleDeleteMessage(message.id)}>Delete</button>
-            </div>
-          ) : ""}
-        </li>
-      ))}
-      </ul>
-  
+      <PaginatedItems 
+        messagesPerPage={15}
+        messages={optimisticMessages}
+        handleEdit={handleEdit}
+        handleDeleteMessage={handleDeleteMessage}
+        user={user} 
+      />
+
+
       <MessagePost onSubmitMessage={handlePostMessage} />
-      <button onClick={() => console.log(messages)}>Test</button>
     </main>
   )
 }
