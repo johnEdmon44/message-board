@@ -32,7 +32,7 @@ async function userMessage(user_id, message) {
 }
 
 async function messages() {
-  const { rows } = await pool.query("SELECT username, message, messages.id, edited, date FROM users JOIN messages ON users.id = messages.user_id ORDER BY date ASC LIMIT 15 ");
+  const { rows } = await pool.query("SELECT username, message, messages.id, edited, date FROM users JOIN messages ON users.id = messages.user_id ORDER BY date ASC");
   return rows;
 }
 
