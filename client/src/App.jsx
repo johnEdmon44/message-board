@@ -92,7 +92,7 @@ function App() {
         <Link to={"/UserList"} >Users</Link>
         {user ? (
           <>
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout} className='cursor-pointer'>Logout</button>
             <Link to="/UserPage">{user.username}</Link>
           </>
         ) : (
