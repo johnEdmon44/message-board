@@ -88,7 +88,7 @@ function App() {
 
   return (
     <main>
-      <Link to={"/UserList"}>Users</Link>
+      <Link to={"/UserList"} class="text-3xl font-bold underline">Users</Link>
 
 
       {user ? (

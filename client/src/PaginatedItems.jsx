@@ -34,6 +34,11 @@ function PaginatedItems({ messages, messagesPerPage, handleEdit, handleDeleteMes
   const currentMessages = messages.slice(messageOffset, messageOffset + messagesPerPage);
   const pageCount = Math.ceil(messages.length / messagesPerPage);
 
+  console.log(`message offset ${messageOffset}`)
+  console.log(`page count ${pageCount}`)
+  console.log(`current messages ${currentMessages}`)
+  console.log(`current page ${currentPage}`)
+  console.log(`search params ${searchParams}`)
   const handlePageClick = (event) => {
     const selectedPage = event.selected + 1;
     setSearchParams({ page: selectedPage })
