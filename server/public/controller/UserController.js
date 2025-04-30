@@ -20,6 +20,19 @@ async function createUserGet(req, res) {
 async function createUserPost(req, res) {
   try {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ message: "Username and password are required." });
+    }
+
+    if (username.length > 20) {
+      return res.status(400).json({ message: "Username must be 20 characters or fewer." });
+    }
+
+    if(password.length < 8) {
+      return res.status(400).json({ message: "Password too short" });
+    }
+
     const hashed = await bcrypt.hash(password, 10);
     await createUser( username, hashed);
     res.status(201).json({ message: "User created successfully" });

@@ -1,16 +1,34 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Error from "../../Error";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassord, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (username.length > 20) {
+      setError("Username must be 20 characters or fewer.");
+      return;
+    }
+
+    if(password !== confirmPassord) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if(password < 8) {
+      setError("Password too short");
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -43,6 +61,7 @@ function Signup() {
     onSubmit={handleSubmit} 
     className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-6"
   >
+    <Error message={error} />
     <div>
       <label htmlFor="username" className="block text-sm font-medium text-gray-700">
         Username:
@@ -56,6 +75,7 @@ function Signup() {
         required
         placeholder="Max 20 characters"
         className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        maxLength={20}
       />
     </div>
 
@@ -70,7 +90,24 @@ function Signup() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-        placeholder="Password"
+        placeholder="Min 8 characters"
+        className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        minLength={8}
+      />
+    </div>
+
+    <div>
+      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+        Confirm password:
+      </label>
+      <input
+        id="confirmPassword"
+        type="password"
+        name="confirmPassword"
+        value={confirmPassord}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+        placeholder="Re-enter password"
         className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
