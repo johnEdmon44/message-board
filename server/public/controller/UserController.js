@@ -37,7 +37,9 @@ async function createUserPost(req, res) {
     await createUser( username, hashed);
     res.status(201).json({ message: "User created successfully" });
   } catch (err) {
-    console.error("Error creating user:", err);
+    if(err.code === '23505') {
+      res.status(409).json({ message: "User already exist"});
+    }
     res.status(500).json({ error: "Failed to create user", details: err.message });
   }
 }

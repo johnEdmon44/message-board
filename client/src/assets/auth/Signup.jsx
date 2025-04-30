@@ -41,7 +41,11 @@ function Signup() {
         navigate("/Login");
       }
     } catch(error) {
-      console.log(error)
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message); // Display "User already exists"
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     }
   }
 
