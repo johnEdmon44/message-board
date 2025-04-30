@@ -87,33 +87,34 @@ function App() {
   }
 
   return (
-    <main>
-      <Link to={"/UserList"} class="text-3xl font-bold underline">Users</Link>
+    <main className='bg-gray-100 min-h-screen'>
+      <nav className='flex justify-center bg-blue-800 font-semibold text-gray-200 gap-10 p-5'>
+        <Link to={"/UserList"} >Users</Link>
+        {user ? (
+          <>
+            <button onClick={handleLogout}>Logout</button>
+            <Link to="/UserPage">{user.username}</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/Login">Login</Link>
+            <Link to={"/Signup"}>Signup</Link>        
+          </>
+        )}
+      </nav>
 
 
-      {user ? (
-        <>
-          <button onClick={handleLogout}>Logout</button>
-          <Link to="/UserPage">{user.username}</Link>
-        </>
-      ) : (
-        <>
-          <Link to="/Login">Login</Link>
-          <Link to={"/Signup"}>Signup</Link>        
-        </>
-      )}
+      <section className='flex flex-col justify-center items-center'>
+        <PaginatedItems 
+          messagesPerPage={5}
+          messages={optimisticMessages}
+          handleEdit={handleEdit}
+          handleDeleteMessage={handleDeleteMessage}
+          user={user} 
+        />
 
-
-      <PaginatedItems 
-        messagesPerPage={1}
-        messages={optimisticMessages}
-        handleEdit={handleEdit}
-        handleDeleteMessage={handleDeleteMessage}
-        user={user} 
-      />
-
-
-      <MessagePost onSubmitMessage={handlePostMessage} />
+        <MessagePost onSubmitMessage={handlePostMessage} />
+      </section>
     </main>
   )
 }

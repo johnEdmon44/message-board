@@ -1,28 +1,82 @@
-import { useState } from "react";
 import ReactPaginate from 'react-paginate';
 import FormatTime from "./util/formatTime";
 import { useSearchParams } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { useState, useEffect } from 'react';
 
 function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user }) {
+  const [dropdown, setDropdown] = useState(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside ANY open dropdown
+      if (!event.target.closest('.dropdown-menu')) {
+        setDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+
   return (
-    <>
+    <ul className='mt-20 '>
       {currentMessages &&
         currentMessages.map((message) => (
-          <div key={message.id}>
-            <p>{message.username}</p>
-            <p>{message.edited ? "Edited" : ""}</p>
-            <p>{message.message}</p>
-            <p><FormatTime date={message.date} /></p>
+          <li key={message.id} className='flex m-5 bg-white rounded-md shadow-md'>
+            <div className='flex flex-col items-center  p-2 w-50 '>
+              <h3 className='font-bold text-lg'>{message.username}</h3>
+              <div className="w-12 h-12 bg-blue-500 rounded-full"></div>
+              <p>127</p>
+            </div>
+            <div className='w-[600px] p-2'>
+              <small className='text-gray-700 font-semi-bold'>Posted <FormatTime date={message.date} /></small>
+              <p className='break-words whitespace-pre-wrap mt-2 mb-5'>{message.message}</p>
+              <small className='font-bold '>{message.edited ? "Edited" : ""}</small>
+            </div>
             {message.optimistic && <span> (Sending...)</span>}
             {user?.username === message.username && (
-              <div>
-                <button onClick={() => handleEdit(message.id)}>Edit</button>
-                <button onClick={() => handleDeleteMessage(message.id)}>Delete</button>
+              <div className='mr-5 relative'>
+                <FontAwesomeIcon 
+                  icon={faEllipsis} 
+                  className='cursor-pointer'                   
+                  onClick={() =>
+                    setDropdown(dropdown === message.id ? null : message.id)
+                  }
+                />
+                <div>
+                  {dropdown === message.id && (
+                    <div className="absolute right-0 mt-2 w-28 bg-white border rounded shadow-lg z-10">
+                        <button
+                          onClick={() => {
+                            handleEdit(message.id);
+                            setDropdown(null);
+                          }}
+                          className="block w-full px-4 py-2 text-sm hover:bg-gray-100 text-left cursor-pointer"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleDeleteMessage(message.id);
+                            setDropdown(null);
+                          }}
+                          className="block w-full px-4 py-2 text-sm hover:bg-gray-100 text-left cursor-pointer"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
               </div>
             )}
-          </div>
+          </li>
         ))}
-    </>
+    </ul>
   );
 }
 
@@ -34,11 +88,6 @@ function PaginatedItems({ messages, messagesPerPage, handleEdit, handleDeleteMes
   const currentMessages = messages.slice(messageOffset, messageOffset + messagesPerPage);
   const pageCount = Math.ceil(messages.length / messagesPerPage);
 
-  console.log(`message offset ${messageOffset}`)
-  console.log(`page count ${pageCount}`)
-  console.log(`current messages ${currentMessages}`)
-  console.log(`current page ${currentPage}`)
-  console.log(`search params ${searchParams}`)
   const handlePageClick = (event) => {
     const selectedPage = event.selected + 1;
     setSearchParams({ page: selectedPage })
@@ -54,12 +103,13 @@ function PaginatedItems({ messages, messagesPerPage, handleEdit, handleDeleteMes
       />
       <ReactPaginate
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel=">"
         onPageChange={handlePageClick}
         pageRangeDisplayed={3}
         pageCount={pageCount}
-        previousLabel="< previous"
+        previousLabel="<"
         renderOnZeroPageCount={null}
+        className='flex justify-center gap-10 font-extrabold text-blue-900 cursor-pointer'
       />
     </div>
   )

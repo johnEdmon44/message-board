@@ -38,21 +38,52 @@ function Signup() {
 
 
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username: </label>
-          <input id="username" name="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required placeholder="Max 20 characters"></input>
-        </div>
+<section className="flex justify-center items-center min-h-screen bg-gray-100">
+  <form 
+    onSubmit={handleSubmit} 
+    className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-6"
+  >
+    <div>
+      <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+        Username:
+      </label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+        placeholder="Max 20 characters"
+        className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
 
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input id="password" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Password"></input>
-        </div>
+    <div>
+      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        Password:
+      </label>
+      <input
+        id="password"
+        type="password"
+        name="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        placeholder="Password"
+        className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
 
-        <button type="submit">Signup</button>
-      </form>
-    </section>
+    <button
+      type="submit"
+      className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition"
+    >
+      Signup
+    </button>
+  </form>
+</section>
+
   )
 }
 
