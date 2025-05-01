@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import Error from "../../Error";
 
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
 
@@ -22,8 +24,12 @@ function Login() {
         navigate("/");
       }
 
-    } catch (error) {
-      console.log(error)
+    } catch (err) {
+      if (err.response && err.response.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
     }
   }
 
@@ -34,6 +40,9 @@ function Login() {
     onSubmit={handleSubmit} 
     className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-6"
   >
+    <h1 className="font-bold">Login</h1>
+
+    <Error message={error} />
     <div>
       <label htmlFor="username" className="block text-sm font-medium text-gray-700">
         Username:
@@ -72,6 +81,7 @@ function Login() {
     >
       Login
     </button>
+    <small>Dont have an account ? <Link to={"/Signup"} className="font-bold">Signup</Link></small>
   </form>
 </section>
 

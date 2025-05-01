@@ -50,13 +50,13 @@ async function userLoginGet(req, res) {
 }
 
 async function userLoginPost(req, res, next) {
-  passport.authenticate('local', (err, user) => {
+  passport.authenticate('local', (err, user, info) => {
     if (err) {
       return res.status(500).json({ error: "Authentication error" });
     }
     
     if (!user) {
-      return res.status(401).json({ error: info.message || "Login failed" });
+      return res.status(401).json({ error: info?.message || "Login failed" });
     }
     req.login(user, (err) => {
       if(err) {

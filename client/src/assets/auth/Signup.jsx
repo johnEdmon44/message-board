@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Error from "../../Error";
 
 function Signup() {
@@ -122,6 +122,7 @@ function Signup() {
     >
       Signup
     </button>
+        <small>Already have an account ? <Link to={"/Login"} className="font-bold">Login</Link></small>
   </form>
 </section>
 
