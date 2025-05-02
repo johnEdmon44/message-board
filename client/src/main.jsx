@@ -2,10 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import UserList from './UserList.jsx'
-import Signup from './assets/auth/Signup.jsx'
-import Login from './assets/auth/Login.jsx'
-import UserPage from './UserPage.jsx'
+import UserList from './component/UserList.jsx'
+import Signup from './component/auth/Signup.jsx'
+import Login from './component/auth/Login.jsx'
+import UserPage from './component/UserPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

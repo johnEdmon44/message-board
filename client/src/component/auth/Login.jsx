@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Error from "../../Error";
+import Error from "../Error";
 
 
 function Login() {
@@ -15,7 +15,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3400/login", 
+      const response = await axios.post("http://localhost:3400/user/login", 
         { username, password },
         { withCredentials: true }
       )

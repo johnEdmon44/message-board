@@ -21,7 +21,7 @@ function UserPage () {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await axios.post(`http://localhost:3400/delete/${user.id}`, 
+      const response = await axios.post(`http://localhost:3400/user/delete/${user.id}`, 
         {},
         { withCredentials: true }
       )
@@ -38,7 +38,7 @@ function UserPage () {
     e.preventDefault();
 
     try {
-      await axios.post(`http://localhost:3400/updateUsername`, 
+      await axios.post(`http://localhost:3400/user/updateUsername`, 
         { username: updatedUsername },
         { withCredentials: true }
       )

@@ -1,11 +1,11 @@
 const express = require("express");
-const path = require("path");
 const app = express();
 const userRouter = require("./public/routes/userRouter");
 const passport = require("passport");
 const session = require("express-session");
 require("./public/db/passport-config");
 const cors = require("cors");
+const messageRouter = require("./public/routes/Message.Router");
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -14,11 +14,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.set("views", path.join(__dirname, "public", "views"));
-app.set("view engine", "ejs");
-
-
 
 app.use(session({
   secret: "test-key",
@@ -29,7 +24,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", userRouter);
+app.use("/user", userRouter);
+app.use("/message", messageRouter);
 
 const PORT = 3400;
 app.listen(PORT, () => console.log(`server running at PORT: ${PORT}`));

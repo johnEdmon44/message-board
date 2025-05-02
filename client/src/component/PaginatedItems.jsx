@@ -1,5 +1,5 @@
 import ReactPaginate from 'react-paginate';
-import FormatTime from "./util/formatTime";
+import FormatTime from "../util/formatTime";
 import { useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';

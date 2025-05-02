@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 function UserList() {
   const [users, setUsers] = useState([])
   const fetchApi = async () => {
-    const response = await axios.get("http://localhost:3400/");
+    const response = await axios.get("http://localhost:3400/users");
     setUsers(response.data.usernames);
   }
 

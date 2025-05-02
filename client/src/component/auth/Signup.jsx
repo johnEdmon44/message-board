@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import Error from "../../Error";
+import Error from "../Error";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -32,7 +32,7 @@ function Signup() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3400/signup",
+        "http://localhost:3400/user/signup",
         { username, password },
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ function Signup() {
   }
 
   const testApi = async () => {
-    const response = await axios.get("http://localhost:3400/signup");
+    const response = await axios.get("http://localhost:3400/user/signup");
     console.log(response);
   }
 

@@ -3,10 +3,6 @@ const {
   createUser,
   deleteUser,
   updateUsername,
-  userMessage,
-  messages,
-  deleteMessage,
-  editMessage
 } = require("../db/queries");
 
 const bcrypt = require("bcryptjs");
@@ -20,10 +16,6 @@ async function getUserList(req, res) {
   } catch (err) {
     res.status(500).send("Error fetching users");
   }
-}
-
-function createUserGet(req, res) {
-  res.render("signup");
 }
 
 // POST create user
@@ -55,9 +47,6 @@ async function createUserPost(req, res) {
   }
 }
 
-function userLoginGet(req, res) {
-  res.render("login");
-}
 
 // POST login
 async function userLoginPost(req, res, next) {
@@ -83,6 +72,7 @@ async function userLoginPost(req, res, next) {
   })(req, res, next);
 }
 
+
 function userLogoutPost(req, res) {
   req.logout((err) => {
     if (err) return next(err);
@@ -90,14 +80,11 @@ function userLogoutPost(req, res) {
   });
 }
 
-function userLogoutGet(req, res, next) {
-  req.logout(err => next(err));
-  res.redirect("login");
-}
 
 async function userPageGet(req, res) {
   res.json({ user: req.user });
 }
+
 
 async function userDeletePost(req, res) {
   try {
@@ -109,6 +96,7 @@ async function userDeletePost(req, res) {
   }
 }
 
+// Change username
 async function updateUserPost(req, res) {
   try {
     const { username } = req.body;
@@ -120,62 +108,12 @@ async function updateUserPost(req, res) {
   }
 }
 
-async function userMessagePost(req, res) {
-  try {
-    const { message } = req.body;
-    const user_id = req.user.id;
-
-    await userMessage(user_id, message);
-    res.status(200).json({ message: "Message post success" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to post message" });
-  }
-}
-
-async function messagesGet(req, res) {
-  try {
-    const allMessages = await messages();
-    res.status(200).json({ messages: allMessages });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch messages" });
-  }
-}
-
-async function deleteMessagePost(req, res) {
-  try {
-    const id = req.params.id;
-    await deleteMessage(id);
-    res.status(200).json({ message: "Message deleted" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete message" });
-  }
-}
-
-async function editMessagePost(req, res) {
-  try {
-    const { message } = req.body;
-    const message_id = req.params.id;
-
-    await editMessage(message_id, message);
-    res.status(200).json({ message: "Edit success" });
-  } catch (error) {
-    res.status(500).json({ message: "Failed to edit message" });
-  }
-}
-
 module.exports = {
   getUserList,
   createUserPost,
-  createUserGet,
   userLoginPost,
   userLogoutPost,
-  userLoginGet,
   userPageGet,
-  userLogoutGet,
   userDeletePost,
   updateUserPost,
-  userMessagePost,
-  messagesGet,
-  deleteMessagePost,
-  editMessagePost
 };
