@@ -32,7 +32,12 @@ async function userMessage(user_id, message) {
 }
 
 async function messages() {
-  const { rows } = await pool.query("SELECT username, message, messages.id, edited, date FROM users JOIN messages ON users.id = messages.user_id ORDER BY date ASC");
+  const { rows } = await pool.query("SELECT username, message, messages.id, user_id, edited, date FROM users JOIN messages ON users.id = messages.user_id ORDER BY date ASC");
+  return rows;
+}
+
+async function countMessage() {
+  const { rows } = await pool.query("SELECT users.id, COUNT(messages.message) FROM users INNER JOIN messages ON users.id = messages.user_id GROUP BY users.id");
   return rows;
 }
 
@@ -56,5 +61,6 @@ module.exports = {
   userMessage,
   messages,
   deleteMessage,
-  editMessage
+  editMessage,
+  countMessage
 }

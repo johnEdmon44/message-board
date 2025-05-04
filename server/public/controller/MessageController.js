@@ -2,7 +2,8 @@ const {
   userMessage,
   messages,
   deleteMessage,
-  editMessage
+  editMessage,
+  countMessage
 } = require("../db/queries");
 
 
@@ -49,10 +50,20 @@ async function editMessagePost(req, res) {
   }
 }
 
+async function countMessageGet(req, res) {
+  try {
+    const response = await countMessage();
+    res.status(200).json({ count: response });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to count messages" });
+  }
+}
+
 
 module.exports = {
   userMessagePost,
   messagesGet,
   deleteMessagePost,
-  editMessagePost
+  editMessagePost,
+  countMessageGet
 }

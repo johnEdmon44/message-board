@@ -2,11 +2,27 @@ import ReactPaginate from 'react-paginate';
 import FormatTime from "../util/formatTime";
 import { useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faMessage, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user }) {
   const [dropdown, setDropdown] = useState(null);
+  const [messageCount, setMessageCount] = useState([]);
+
+  const fetchMessageCount = async () => {
+    try {
+      const response = await axios.get("http://localhost:3400/message/countMessage", { withCredentials:  true });
+      setMessageCount(response.data.count);
+      console.log(response.data.count)
+    } catch (error){
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchMessageCount();
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -30,8 +46,13 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
           <li key={message.id} className='flex m-5 bg-white rounded-md shadow-md'>
             <div className='flex flex-col items-center  p-2 w-50 '>
               <h3 className='font-bold text-lg'>{message.username}</h3>
-              <div className="w-12 h-12 bg-blue-500 rounded-full"></div>
-              <p>127</p>
+              <div className="w-12 h-12 bg-gray-200 rounded-full flex justify-center items-center">
+                <FontAwesomeIcon icon={faUser} size='xl'/>
+              </div>
+              <small className='flex gap-1 text-gray-500 items-center mt-1 object-center'>
+                <FontAwesomeIcon icon={faMessage} color='grey' size='xs' className='mt-0.5'/>
+                {messageCount.find(count => count.id === message.user_id)?.count || 0}
+              </small>
             </div>
             <div className='w-[600px] p-2'>
               <small className='text-gray-700 font-semi-bold'>Posted <FormatTime date={message.date} /></small>

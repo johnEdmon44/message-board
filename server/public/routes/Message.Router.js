@@ -7,5 +7,5 @@ messageRouter.post("/postMessage", messageController.userMessagePost);
 messageRouter.get("/messages", messageController.messagesGet);
 messageRouter.delete("/deleteMessage/:id", messageController.deleteMessagePost);
 messageRouter.post("/editMessage/:id", messageController.editMessagePost);
-
+messageRouter.get("/countMessage", messageController.countMessageGet);
 module.exports = messageRouter;
