@@ -1,10 +1,9 @@
-import ReactPaginate from 'react-paginate';
-import FormatTime from "../util/formatTime";
-import { useSearchParams } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faMessage, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import FormatTime from "../util/formatTime";
+
 
 function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user }) {
   const [dropdown, setDropdown] = useState(null);
@@ -101,39 +100,5 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
   );
 }
 
-function PaginatedItems({ messages, messagesPerPage, handleEdit, handleDeleteMessage, user }) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get('page')) || 1;
 
-  const messageOffset = (currentPage - 1) * messagesPerPage;
-  const currentMessages = messages.slice(messageOffset, messageOffset + messagesPerPage);
-  const pageCount = Math.ceil(messages.length / messagesPerPage);
-
-  const handlePageClick = (event) => {
-    const selectedPage = event.selected + 1;
-    setSearchParams({ page: selectedPage })
-  };
-
-  return (
-    <div>
-      <MessageList
-        currentMessages={currentMessages}
-        handleEdit={handleEdit}
-        handleDeleteMessage={handleDeleteMessage}
-        user={user}
-      />
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel=">"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        pageCount={pageCount}
-        previousLabel="<"
-        renderOnZeroPageCount={null}
-        className='flex justify-center gap-10 font-extrabold text-blue-900 cursor-pointer'
-      />
-    </div>
-  )
-}
-
-export default PaginatedItems;
+export default MessageList;
