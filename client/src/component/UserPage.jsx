@@ -1,23 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { fetchUser } from "./fetchUser";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { AuthContext } from "./auth/AuthContext";
 
 
 function UserPage () {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
   const [updatedUsername, setUdatedUsername] = useState("");
-
-  useEffect(() => {
-    const getUser = async () => {
-      const currentUser = await fetchUser();
-      setUser(currentUser);
-    }
-    getUser();
-  }, [])
-
 
   const handleDeleteAccount = async () => {
     try {
@@ -26,7 +15,7 @@ function UserPage () {
         { withCredentials: true }
       )
       if(response.status === 200) {
-        navigate("/");
+        window.location.href = "/";
       }
     } catch(error) {
       console.log(error);
@@ -53,16 +42,24 @@ function UserPage () {
 
 
   return (
-    <section>
-      <h1>Hello, { user ? user.username : "Anon" }</h1>
-      <Link to={"/"}>HOme</Link>
-      <form onSubmit={handleUpdateUsername}>
-        <label htmlFor="username">Username: </label>
-        <input id="username" name="username" type="text" value={updatedUsername} onChange={(e) => setUdatedUsername(e.target.value)} required></input>
-        <button type="submit">Change username</button>
-      </form>
-      <button onClick={handleDeleteAccount}>Delete</button>
-      <button onClick={() => console.log(user)}>Test</button>
+    <section className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-6">
+        <h1 className="font-bold">Hello, { user ? user.username : "Anon" }</h1>
+        <form onSubmit={handleUpdateUsername} >
+          <label htmlFor="username" className="block text-sm font-medium text-gray-700">Change username: </label>
+          <input 
+          id="username" 
+          name="username" 
+          type="text" 
+          value={updatedUsername} 
+          onChange={(e) => setUdatedUsername(e.target.value)} 
+          required
+          className="mt-1 mb-5 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ></input>
+          <button type="submit" className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition">Change username</button>
+        </form>
+        <button onClick={handleDeleteAccount} className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition">Delete</button>
+      </div>
     </section>
   )
 }
