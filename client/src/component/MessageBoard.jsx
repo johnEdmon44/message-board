@@ -1,18 +1,20 @@
 import ReactPaginate from 'react-paginate';
 import { useSearchParams } from "react-router-dom";
-
-import { useState, useEffect, useOptimistic } from 'react';
+import { useState, useEffect, useOptimistic, useContext } from 'react';
 import axios from 'axios';
 import MessagePost from './MessagePost';
 import MessageList from './MessageList';
+import { AuthContext } from './auth/AuthContext';
 
 
-function MessageBoard({ messagesPerPage, user }) {
+function MessageBoard() {
+  const { user } = useContext(AuthContext)
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get('page')) || 1;
   const [messages, setMessages] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState("");
+  const messagesPerPage = 10;
   const [optimisticMessages, addOptimisticMessages] = useOptimistic(
     messages,
     (currentMessages, newMessage) => [
@@ -87,7 +89,7 @@ function MessageBoard({ messagesPerPage, user }) {
 
 
   return (
-    <div>
+    <section className='flex flex-col justify-center items-center'>
       <MessageList
         currentMessages={currentMessages}
         handleEdit={handleEdit}
@@ -106,7 +108,7 @@ function MessageBoard({ messagesPerPage, user }) {
       />
 
       <MessagePost onSubmitMessage={handlePostMessage} />
-    </div>
+    </section>
   )
 }
 

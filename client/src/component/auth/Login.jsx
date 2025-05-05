@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Error from "../Error";
 
 
@@ -8,7 +8,6 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
@@ -21,7 +20,7 @@ function Login() {
       )
 
       if(response.status === 200) {
-        navigate("/");
+        window.location.href = "/"
       }
 
     } catch (err) {
