@@ -4,7 +4,7 @@ const {
   deleteMessage,
   editMessage,
   countMessage
-} = require("../db/queries");
+} = require("../db/messageQueries");
 
 
 async function userMessagePost(req, res) {

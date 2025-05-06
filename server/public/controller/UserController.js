@@ -1,11 +1,10 @@
-const {
+const { 
+  getUserPaginate,
   getUsernames,
   createUser,
   deleteUser,
-  updateUsername,
-} = require("../db/queries");
-
-const { getUserPaginate } = require("../db/userQueries");
+  updateUsername, 
+} = require("../db/userQueries");
 
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
