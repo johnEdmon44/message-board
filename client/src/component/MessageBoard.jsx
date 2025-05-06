@@ -104,7 +104,15 @@ function MessageBoard() {
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}
-        className='flex justify-center gap-10 font-extrabold text-blue-900 cursor-pointer'
+        className="flex justify-center gap-4 items-center mt-4 cursor-pointe "
+        pageLinkClassName=" px-3 py-1 cursor-pointer"
+        pageClassName=" rounded hover:bg-blue-100 px-3 py-1"
+        activeClassName="bg-blue-500 text-white hover:bg-blue-600  "
+        previousClassName="font-bold rounded hover:bg-blue-100 cursor-pointer"
+        nextClassName="font-bold rounded hover:bg-blue-100 cursor-pointer"
+        disabledClassName="text-gray-400 cursor-not-allowed"
+        nextLinkClassName="px-3 py-1"
+        previousLinkClassName="px-3 py-1"
       />
 
       <MessagePost onSubmitMessage={handlePostMessage} />
