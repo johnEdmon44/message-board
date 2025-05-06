@@ -5,6 +5,8 @@ const {
   updateUsername,
 } = require("../db/queries");
 
+const { getUserPaginate } = require("../db/userQueries");
+
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
@@ -108,6 +110,26 @@ async function updateUserPost(req, res) {
   }
 }
 
+
+async function getPaginatedUsers(req, res) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 2;
+
+    const { users, totalUsers } = await getUserPaginate(page, limit);
+
+    res.json({
+      usernames: users,
+      totalPages: Math.ceil(totalUsers / limit),
+      currentPage: page,
+      totalUsers
+    });
+  } catch (error) {
+    res.json({ error: "Error fetching paginated users" });
+  }
+}
+
+
 module.exports = {
   getUserList,
   createUserPost,
@@ -116,4 +138,5 @@ module.exports = {
   userPageGet,
   userDeletePost,
   updateUserPost,
+  getPaginatedUsers
 };
