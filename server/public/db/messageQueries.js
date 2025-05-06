@@ -26,11 +26,28 @@ async function editMessage(id, newMessage) {
   return rows[0];
 }
 
+async function getMessagesPaginate(page, limit) {
+  const offset = (page - 1) * limit;
+
+  const getMessagesQuery = await pool.query(`SELECT username, message, messages.id, user_id, edited, date 
+    FROM users JOIN messages ON users.id = messages.user_id ORDER BY date ASC LIMIT $1 OFFSET $2`, [limit, offset]);
+  const countMessagesQuery = await pool.query("SELECT COUNT(*) FROM messages");
+
+  const messages = getMessagesQuery.rows;
+  const totalMessages = parseInt(countMessagesQuery.rows[0].count);
+
+  return {
+    messages,
+    totalMessages
+  }
+}
+
 
 module.exports = {
   userMessage,
   messages,
   deleteMessage,
   editMessage,
-  countMessage
+  countMessage,
+  getMessagesPaginate
 }

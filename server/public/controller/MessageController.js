@@ -3,7 +3,8 @@ const {
   messages,
   deleteMessage,
   editMessage,
-  countMessage
+  countMessage,
+  getMessagesPaginate
 } = require("../db/messageQueries");
 
 
@@ -60,10 +61,29 @@ async function countMessageGet(req, res) {
 }
 
 
+async function getPaginatedMessages(req, res) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 15;
+
+    const { messages, totalMessages } = await getMessagesPaginate(page, limit);
+
+    res.json({
+      messages,
+      totalPages: Math.ceil(totalMessages / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    res.json({ error: "Error fetching paginated messages" });
+  }
+}
+
+
 module.exports = {
   userMessagePost,
   messagesGet,
   deleteMessagePost,
   editMessagePost,
-  countMessageGet
+  countMessageGet,
+  getPaginatedMessages
 }

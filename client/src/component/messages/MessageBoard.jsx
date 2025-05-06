@@ -1,39 +1,33 @@
 import ReactPaginate from 'react-paginate';
 import { useSearchParams } from "react-router-dom";
-import { useState, useEffect, useOptimistic, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import MessagePost from './MessagePost';
 import MessageList from './MessageList';
-import { AuthContext } from './auth/AuthContext';
+import { AuthContext } from '../auth/AuthContext';
 
 
 function MessageBoard() {
   const { user } = useContext(AuthContext)
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get('page')) || 1;
   const [messages, setMessages] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState("");
-  const messagesPerPage = 10;
-  const [optimisticMessages, addOptimisticMessages] = useOptimistic(
-    messages,
-    (currentMessages, newMessage) => [
-      ...currentMessages,
-      {
-        id: Date.now(),  
-        username: user.username,
-        message: newMessage,
-        date: new Date().toISOString(),
-        optimistic: true
-      } 
-    ] 
-  );
+  const [pageCount, setPageCount] = useState(0);
 
+  const messagesPerPage = 15;
+  const currentPage = parseInt(searchParams.get('page')) || 1;
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get("http://localhost:3400/message/messages", { withCredentials: true });
+      const response = await axios.get("http://localhost:3400/message/messages", {
+        params: {
+          page: currentPage,
+          limit: messagesPerPage
+        }
+      }, { withCredentials: true });
       setMessages(response.data.messages);
+      setPageCount(response.data.totalPages);
     } catch(error) {
       console.log(error)
     }
@@ -42,18 +36,13 @@ function MessageBoard() {
 
   useEffect(() => {
     fetchMessages();
-  }, []);
+  }, [currentPage]);
 
 
   const handleEdit = async (message_id) => {
     setEditId(message_id);
     setEdit(true);
   }
-
-
-  const messageOffset = (currentPage - 1) * messagesPerPage;
-  const currentMessages = optimisticMessages.slice(messageOffset, messageOffset + messagesPerPage);
-  const pageCount = Math.ceil(optimisticMessages.length / messagesPerPage);
 
 
   const handlePageClick = (event) => {
@@ -73,7 +62,6 @@ function MessageBoard() {
 
 
   const handlePostMessage = async (newMessage) => {
-    addOptimisticMessages(newMessage);
     try {
       if(edit) {
         await axios.post(`http://localhost:3400/message/editMessage/${editId}`,{ message: newMessage }, { withCredentials: true });
@@ -91,7 +79,7 @@ function MessageBoard() {
   return (
     <section className='flex flex-col justify-center items-center'>
       <MessageList
-        currentMessages={currentMessages}
+        currentMessages={messages}
         handleEdit={handleEdit}
         handleDeleteMessage={handleDeleteMessage}
         user={user}

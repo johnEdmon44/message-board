@@ -2,7 +2,7 @@ import { faEllipsis, faMessage, faUser } from '@fortawesome/free-solid-svg-icons
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FormatTime from "../util/formatTime";
+import FormatTime from "../../util/formatTime";
 
 
 function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user }) {
@@ -21,7 +21,7 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
 
   useEffect(() => {
     fetchMessageCount();
-  }, [])
+  }, [currentMessages])
 
   useEffect(() => {
     const handleClickOutside = (event) => {

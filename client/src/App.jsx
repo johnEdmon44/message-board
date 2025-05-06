@@ -1,7 +1,6 @@
 import './App.css';
-import MessageBoard from './component/MessageBoard';
+import MessageBoard from './component/messages/MessageBoard.jsx';
 import { Routes, Route } from 'react-router-dom'
-import UserList from './component/Users/UserList.jsx'
 import Signup from './component/auth/Signup.jsx'
 import Login from './component/auth/Login.jsx'
 import UserPage from './component/UserPage.jsx'
