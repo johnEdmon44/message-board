@@ -11,7 +11,7 @@ function UserPaginate() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(false);
   
-  const userPerPage = 2;
+  const userPerPage = 25;
   const currentPage = parseInt(searchParams.get('page')) || 1;
 
   useEffect(() => {
