@@ -6,9 +6,10 @@ const session = require("express-session");
 require("./public/db/passport-config");
 const cors = require("cors");
 const messageRouter = require("./public/routes/Message.Router");
+require('dotenv').config();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.URL,
   credentials: true
 }));
 
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-  secret: "test-key",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
