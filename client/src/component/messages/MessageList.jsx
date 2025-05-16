@@ -39,61 +39,83 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
 
 
   return (
-    <ul className='mt-20 '>
+    <ul className='mt-5'>
       {currentMessages &&
         currentMessages.map((message) => (
-          <li key={message.id} className='flex m-5 bg-white rounded-md shadow-md'>
-            <div className='flex flex-col items-center  p-2 w-50 '>
-              <h3 className='font-bold text-lg'>{message.username}</h3>
-              <div className="w-12 h-12 bg-gray-200 rounded-full flex justify-center items-center">
-                <FontAwesomeIcon icon={faUser} size='xl'/>
+          <li key={message.id} className='flex flex-col m-5 bg-white rounded-md shadow-md'>
+
+            {/* USER */}
+            <div className='flex  p-2 w-screen lg:w-[600px] border-b-gray-300 shadow-sm relative'>
+
+              <div className='flex flex-col justify-center items-center mr-5'>
+                <div className="w-12 h-12 bg-gray-200 rounded-full flex justify-center items-center">
+                  {/* User icon */}
+                  <FontAwesomeIcon icon={faUser} size='xl'/>
+                </div>              
+                <div>
+                  {/* COUNT TOTAL MESSAGES USER SENT */}
+                  <div className='flex mt-1 gap-1  items-center'>
+                    <FontAwesomeIcon icon={faMessage} color='grey' size='xs' className='mt-0.5'/>
+                    <small>
+                      {messageCount.find(count => count.id === message.user_id)?.count || 0} 
+                    </small>
+                  </div>
+                </div>
               </div>
-              <small className='flex gap-1 text-gray-500 items-center mt-1 object-center'>
-                <FontAwesomeIcon icon={faMessage} color='grey' size='xs' className='mt-0.5'/>
-                {messageCount.find(count => count.id === message.user_id)?.count || 0}
-              </small>
+
+                {/* Username */}
+              <div>
+                <h3 className='font-bold text-lg'>{message.username}</h3>
+                <small className=' text-gray-500'>
+                  <p className='text-gray-700 font-semi-bold'>Posted <FormatTime date={message.date} /></p>
+                </small>
+              </div>
+
+              {/* EDIT / DELETE */}
+              {user?.username === message.username && (
+                <div className='mr-5 absolute right-3 top-3'>
+                  <FontAwesomeIcon 
+                    icon={faEllipsis} 
+                    className='cursor-pointer'                   
+                    onClick={() =>
+                      setDropdown(dropdown === message.id ? null : message.id)
+                    }
+                  />
+                  <div>
+                    {dropdown === message.id && (
+                      <div className="absolute right-0 mt-2 w-28 bg-white border rounded shadow-lg">
+                          <button
+                            onClick={() => {
+                              handleEdit(message.id);
+                              setDropdown(null);
+                            }}
+                            className="block w-full px-4 py-2 text-sm hover:bg-gray-100 text-left cursor-pointer"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => {
+                              handleDeleteMessage(message.id);
+                              setDropdown(null);
+                            }}
+                            className="block w-full px-4 py-2 text-sm hover:bg-gray-100 text-left cursor-pointer"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                </div>
+              )}
             </div>
-            <div className='w-[600px] p-2'>
-              <small className='text-gray-700 font-semi-bold'>Posted <FormatTime date={message.date} /></small>
+
+            {/* MESSAGE */}
+            <div className='w-screen lg:w-[600px] p-2'>
               <p className='break-words whitespace-pre-wrap mt-2 mb-5'>{message.message}</p>
               <small className='font-bold '>{message.edited ? "Edited" : ""}</small>
             </div>
+
             {message.optimistic && <span> (Sending...)</span>}
-            {user?.username === message.username && (
-              <div className='mr-5 relative'>
-                <FontAwesomeIcon 
-                  icon={faEllipsis} 
-                  className='cursor-pointer'                   
-                  onClick={() =>
-                    setDropdown(dropdown === message.id ? null : message.id)
-                  }
-                />
-                <div>
-                  {dropdown === message.id && (
-                    <div className="absolute right-0 mt-2 w-28 bg-white border rounded shadow-lg z-10">
-                        <button
-                          onClick={() => {
-                            handleEdit(message.id);
-                            setDropdown(null);
-                          }}
-                          className="block w-full px-4 py-2 text-sm hover:bg-gray-100 text-left cursor-pointer"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleDeleteMessage(message.id);
-                            setDropdown(null);
-                          }}
-                          className="block w-full px-4 py-2 text-sm hover:bg-gray-100 text-left cursor-pointer"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    )}
-                  </div>
-              </div>
-            )}
           </li>
         ))}
     </ul>

@@ -15,7 +15,7 @@ function MessagePost({ onSubmitMessage, value = ""}) {
   }
 
   return (
-    <div className="bg-white w-[600px] rounded-sm mt-5 mb-5 shadow-md">
+    <div className="bg-white w-screen lg:w-[600px] rounded-sm mt-5 mb-5 shadow-md">
       <form onSubmit={handleSubmit} className="flex items-center p-5 gap-10">
         <textarea 
           value={message}
