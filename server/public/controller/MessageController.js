@@ -13,6 +13,18 @@ async function userMessagePost(req, res) {
     const { message } = req.body;
     const user_id = req.user.id;
 
+    if (!message || message.trim() === "") {
+      return res.status(400).json({ error: "Empty message" });
+    }
+
+    if(message.length > 255) {
+      return res.status(400).json({ error: "Message too long" });
+    }
+
+    if(message.length <= 3) {
+      return res.status(400).json({ error: "message too short" });
+    }
+
     await userMessage(user_id, message);
     res.status(200).json({ message: "Message post success" });
   } catch (error) {

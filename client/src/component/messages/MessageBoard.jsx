@@ -14,6 +14,7 @@ function MessageBoard() {
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState("");
   const [pageCount, setPageCount] = useState(0);
+  const [error , setError] = useState("");
 
   const messagesPerPage = 15;
   const currentPage = parseInt(searchParams.get('page')) || 1;
@@ -62,6 +63,7 @@ function MessageBoard() {
 
 
   const handlePostMessage = async (newMessage) => {
+    setError("");
     try {
       if(edit) {
         await axios.post(`http://localhost:3400/message/editMessage/${editId}`,{ message: newMessage }, { withCredentials: true });
@@ -71,7 +73,7 @@ function MessageBoard() {
       fetchMessages();
       setEdit(false);
     } catch(error) {
-      console.log(error);
+      setError(error.response.data.error);
     }
   };
 
@@ -103,7 +105,7 @@ function MessageBoard() {
         previousLinkClassName="px-3 py-1"
       />
 
-      <MessagePost onSubmitMessage={handlePostMessage} />
+      <MessagePost onSubmitMessage={handlePostMessage} error={error} />
     </section>
   )
 }
