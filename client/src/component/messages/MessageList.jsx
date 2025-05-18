@@ -1,13 +1,15 @@
 import { faEllipsis, faMessage, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FormatTime from "../../util/formatTime";
+import MessagePost from './MessagePost';
 
 
-function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user }) {
+function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user, edit, editId, onSubmitMessage }) {
   const [dropdown, setDropdown] = useState(null);
   const [messageCount, setMessageCount] = useState([]);
+  const dropdownRef = useRef();
 
   const fetchMessageCount = async () => {
     try {
@@ -21,22 +23,20 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
 
   useEffect(() => {
     fetchMessageCount();
-  }, [currentMessages])
+  }, [currentMessages]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Check if the click is outside ANY open dropdown
-      if (!event.target.closest('.dropdown-menu')) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdown(null);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
 
   return (
     <ul className='mt-5'>
@@ -73,22 +73,19 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
 
               {/* EDIT / DELETE */}
               {user?.username === message.username && (
-                <div className='mr-5 absolute right-3 top-3'>
+                <div className='mr-5 absolute right-3 top-3' ref={dropdown === message.id ? dropdownRef : null}>
                   <FontAwesomeIcon 
                     icon={faEllipsis} 
-                    className='cursor-pointer'                   
+                    className='cursor-pointer'
                     onClick={() =>
-                      setDropdown(dropdown === message.id ? null : message.id)
-                    }
+                      setDropdown(prev => (prev === message.id ? null : message.id))
+                    }                   
                   />
                   <div>
                     {dropdown === message.id && (
                       <div className="absolute right-0 mt-2 w-28 bg-white border rounded shadow-lg">
                           <button
-                            onClick={() => {
-                              handleEdit(message.id);
-                              setDropdown(null);
-                            }}
+                            onClick={() => handleEdit(message.id)}
                             className="block w-full px-4 py-2 text-sm hover:bg-gray-100 text-left cursor-pointer"
                           >
                             Edit
@@ -111,8 +108,15 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user })
 
             {/* MESSAGE */}
             <div className='w-screen lg:w-[600px] p-2'>
-              <p className='break-words whitespace-pre-wrap mt-2 mb-5'>{message.message}</p>
-              <small className='font-bold '>{message.edited ? "Edited" : ""}</small>
+              { edit && editId === message.id 
+                ?
+                <MessagePost value={message.message}     onSubmitMessage={onSubmitMessage} />
+                : 
+                <>
+                  <p className='break-words whitespace-pre-wrap mt-2 mb-5'>{message.message}</p>
+                  <small className='font-bold '>{message.edited ? "Edited" : ""}</small>
+                </>
+              }
             </div>
 
             {message.optimistic && <span> (Sending...)</span>}

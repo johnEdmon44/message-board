@@ -12,7 +12,7 @@ function MessageBoard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [messages, setMessages] = useState([]);
   const [edit, setEdit] = useState(false);
-  const [editId, setEditId] = useState("");
+  const [editId, setEditId] = useState("string");
   const [pageCount, setPageCount] = useState(0);
   const [error , setError] = useState("");
 
@@ -85,6 +85,9 @@ function MessageBoard() {
         handleEdit={handleEdit}
         handleDeleteMessage={handleDeleteMessage}
         user={user}
+        edit={edit}
+        editId={editId}
+        onSubmitMessage={handlePostMessage}
       />
       <ReactPaginate
         breakLabel="..."
