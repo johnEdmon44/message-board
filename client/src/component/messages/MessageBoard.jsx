@@ -1,6 +1,6 @@
 import ReactPaginate from 'react-paginate';
 import { useSearchParams } from "react-router-dom";
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef} from 'react';
 import axios from 'axios';
 import MessagePost from './MessagePost';
 import MessageList from './MessageList';
@@ -13,8 +13,11 @@ function MessageBoard() {
   const [messages, setMessages] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState("string");
+  const [editValue, setEditValue] = useState("");
   const [pageCount, setPageCount] = useState(0);
   const [error , setError] = useState("");
+
+  const messagePostRef = useRef(null);
 
   const messagesPerPage = 15;
   const currentPage = parseInt(searchParams.get('page')) || 1;
@@ -41,8 +44,16 @@ function MessageBoard() {
 
 
   const handleEdit = async (message_id) => {
-    setEditId(message_id);
-    setEdit(true);
+    const msg = messages.find(m => m.id === message_id);
+    if(msg) {
+      setEdit(true)
+      setEditId(message_id);
+      setEditValue(msg.message);
+
+      setTimeout(() => {
+        messagePostRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
   }
 
 
@@ -72,10 +83,18 @@ function MessageBoard() {
       }
       fetchMessages();
       setEdit(false);
+      setEditId("");
+      setEditValue("");
     } catch(error) {
       setError(error.response.data.error);
     }
   };
+
+  const handleCancelEdit = () => {
+    setEdit(false);
+    setEditId("");
+    setEditValue("");
+  }
 
 
   return (
@@ -108,7 +127,7 @@ function MessageBoard() {
         previousLinkClassName="px-3 py-1"
       />
 
-      <MessagePost onSubmitMessage={handlePostMessage} error={error} />
+      <MessagePost onSubmitMessage={handlePostMessage} error={error} value={editValue} ref={messagePostRef} onCancelEdit={handleCancelEdit} edit={edit}/>
     </section>
   )
 }

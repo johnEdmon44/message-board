@@ -6,7 +6,7 @@ import FormatTime from "../../util/formatTime";
 import MessagePost from './MessagePost';
 
 
-function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user, edit, editId, onSubmitMessage }) {
+function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user, }) {
   const [dropdown, setDropdown] = useState(null);
   const [messageCount, setMessageCount] = useState([]);
   const dropdownRef = useRef();
@@ -108,15 +108,9 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user, e
 
             {/* MESSAGE */}
             <div className='w-screen lg:w-[600px] p-2'>
-              { edit && editId === message.id 
-                ?
-                <MessagePost value={message.message}     onSubmitMessage={onSubmitMessage} />
-                : 
-                <>
-                  <p className='break-words whitespace-pre-wrap mt-2 mb-5'>{message.message}</p>
-                  <small className='font-bold '>{message.edited ? "Edited" : ""}</small>
-                </>
-              }
+              {/* edit && editId === message.id  */}
+              <p className='break-words whitespace-pre-wrap mt-2 mb-5'>{message.message}</p>
+              <small className='font-bold '>{message.edited ? "Edited" : ""}</small>              
             </div>
 
             {message.optimistic && <span> (Sending...)</span>}
