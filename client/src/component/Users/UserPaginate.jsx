@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import UserList from "./UserList";
+import Error from "../Error";
 
 function UserPaginate() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -10,6 +11,7 @@ function UserPaginate() {
   const [pageCount, setPageCount] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   
   const userPerPage = 25;
   const currentPage = parseInt(searchParams.get('page')) || 1;
@@ -28,7 +30,7 @@ function UserPaginate() {
         setPageCount(response.data.totalPages);
         setTotalUsers(response.data.totalUsers);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        setError(error.response.data.error);
       } finally {
         setLoading(false);
       }
@@ -46,6 +48,7 @@ function UserPaginate() {
   return (
     <section className={`flex justify-center items-center min-h-screen bg-gray-100 ${loading ? "opacity-50" : "opacity-100"}`}>
       <div className="bg-white p-8 rounded-lg shadow-md  space-y-6">
+        <Error message={error}/>
         <UserList
           currentUsers={users}
           totalUsers={totalUsers} 

@@ -13,9 +13,9 @@ const passport = require("passport");
 async function getUserList(req, res) {
   try {
     const usernames = await getUsernames();
-    res.json({ usernames });
+    return res.json({ usernames });
   } catch (err) {
-    res.status(500).send("Error fetching users");
+    return res.status(500).send("Error fetching users");
   }
 }
 
