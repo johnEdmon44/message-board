@@ -28,5 +28,5 @@ app.use(passport.session());
 app.use("/user", userRouter);
 app.use("/message", messageRouter);
 
-const PORT = 3400;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`server running at PORT: ${PORT}`));
