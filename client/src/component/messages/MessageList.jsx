@@ -2,9 +2,7 @@ import { faEllipsis, faMessage, faUser } from '@fortawesome/free-solid-svg-icons
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FormatTime from "../../util/formatTime";
-import MessagePost from './MessagePost';
-
+import FormatTime from '../../util/FormatTime';
 
 function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user, }) {
   const [dropdown, setDropdown] = useState(null);
