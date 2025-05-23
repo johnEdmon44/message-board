@@ -24,7 +24,7 @@ function MessageBoard() {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get("http://localhost:3400/message/messages", {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/message/messages`, {
         params: {
           page: currentPage,
           limit: messagesPerPage
@@ -65,7 +65,7 @@ function MessageBoard() {
 
   const handleDeleteMessage = async (message) => {
     try {
-      await axios.delete(`http://localhost:3400/message/deleteMessage/${message}`,{} , { withCredentials: true });
+      await axios.delete(`${import.meta.env.VITE_API_URL}/message/deleteMessage/${message}`,{} , { withCredentials: true });
       fetchMessages();
     } catch (error) {
       console.log(error);
@@ -77,9 +77,9 @@ function MessageBoard() {
     setError("");
     try {
       if(edit) {
-        await axios.post(`http://localhost:3400/message/editMessage/${editId}`,{ message: newMessage }, { withCredentials: true });
+        await axios.post(`${import.meta.env.VITE_API_URL}/message/editMessage/${editId}`,{ message: newMessage }, { withCredentials: true });
       } else {
-        await axios.post("http://localhost:3400/message/postMessage",{ message: newMessage }, { withCredentials:true });
+        await axios.post(`${import.meta.env.VITE_API_URL}/message/postMessage`,{ message: newMessage }, { withCredentials:true });
       }
       fetchMessages();
       setEdit(false);

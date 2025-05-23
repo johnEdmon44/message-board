@@ -11,7 +11,7 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user, }
 
   const fetchMessageCount = async () => {
     try {
-      const response = await axios.get("http://localhost:3400/message/countMessage", { withCredentials:  true });
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/message/countMessage`, { withCredentials:  true });
       setMessageCount(response.data.count);
       console.log(response.data.count)
     } catch (error){

@@ -10,7 +10,7 @@ function UserPage () {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await axios.post(`http://localhost:3400/user/delete/${user.id}`, 
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/delete/${user.id}`, 
         {},
         { withCredentials: true }
       )
@@ -27,7 +27,7 @@ function UserPage () {
     e.preventDefault();
 
     try {
-      await axios.post(`http://localhost:3400/user/updateUsername`, 
+      await axios.post(`${import.meta.env.VITE_API_URL}/user/updateUsername`, 
         { username: updatedUsername },
         { withCredentials: true }
       )

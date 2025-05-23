@@ -20,7 +20,7 @@ function UserPaginate() {
     const fetchApi = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3400/user/users`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/users`, {
           params: {
             page: currentPage,
             limit: userPerPage
