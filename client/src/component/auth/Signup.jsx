@@ -32,7 +32,7 @@ function Signup() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3400/user/signup",
+        `${import.meta.env.VITE_API_URL}/user/signup`,
         { username, password },
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ function Signup() {
   }
 
   const testApi = async () => {
-    const response = await axios.get("http://localhost:3400/user/signup");
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/signup`);
     console.log(response);
   }
 

@@ -9,7 +9,7 @@ function AuthProvider ({ children }) {
   const handleLogout = async () =>
      {
     try {
-      await axios.post("http://localhost:3400/user/logout", {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_API_URL}/user/logout`, {}, { withCredentials: true });
       setUser(null);
       window.location.reload();
     } catch (error) {
