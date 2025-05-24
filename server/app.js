@@ -8,19 +8,8 @@ const cors = require("cors");
 const messageRouter = require("./public/routes/Message.Router");
 require('dotenv').config();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://message-board-9hwd.vercel.app"
-];
-
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: process.env.URL,
   credentials: true
 }));
 
