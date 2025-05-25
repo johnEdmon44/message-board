@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Error from "../Error";
@@ -48,15 +48,6 @@ function Signup() {
       }
     }
   }
-
-  const testApi = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/signup`);
-    console.log(response);
-  }
-
-  useEffect(() => {
-    testApi();
-  }, [])
 
 
   return (
