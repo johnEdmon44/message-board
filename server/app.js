@@ -19,7 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+    cookie: {
+    sameSite: "none",    // Required for cross-site cookies
+    secure: true,        // Required when using HTTPS (which Render uses)
+    httpOnly: true
+  }
 }));
 
 app.use(passport.initialize());
