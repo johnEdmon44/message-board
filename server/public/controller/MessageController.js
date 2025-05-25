@@ -13,10 +13,6 @@ async function userMessagePost(req, res) {
     const { message } = req.body;
     const user_id = req.session.user?.id;
 
-    if (!user_id) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-    
     if (!message || message.trim() === "") {
       return res.status(400).json({ error: "Empty message" });
     }
