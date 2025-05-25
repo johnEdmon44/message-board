@@ -25,7 +25,7 @@ function UserPaginate() {
             page: currentPage,
             limit: userPerPage
           }
-        });
+        }, { withCredentials: true });
         setUsers(response.data.usernames);
         setPageCount(response.data.totalPages);
         setTotalUsers(response.data.totalUsers);
