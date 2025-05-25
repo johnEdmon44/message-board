@@ -11,7 +11,7 @@ const {
 async function userMessagePost(req, res) {
   try {
     const { message } = req.body;
-    const user_id = req.session.user?.id;
+    const user_id = req.user.id;
 
     if (!message || message.trim() === "") {
       return res.status(400).json({ error: "Empty message" });

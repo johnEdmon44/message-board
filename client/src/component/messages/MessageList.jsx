@@ -13,7 +13,6 @@ function MessageList({ currentMessages, handleEdit, handleDeleteMessage, user, }
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/message/countMessage`, { withCredentials:  true });
       setMessageCount(response.data.count);
-      console.log(response.data.count)
     } catch (error){
       console.log(error);
     }
