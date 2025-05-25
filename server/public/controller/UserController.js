@@ -65,8 +65,6 @@ async function userLoginPost(req, res, next) {
         return res.status(500).json({ error: "Error session" });
       }
 
-      req.session.user = { id: user.id };
-
       res.status(200).json({
         message: "Login success",
         user: { id: user.id, username: user.username }
