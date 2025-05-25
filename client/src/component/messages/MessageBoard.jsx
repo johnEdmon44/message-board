@@ -113,7 +113,7 @@ function MessageBoard() {
         nextLabel=">"
         onPageChange={handlePageClick}
         pageRangeDisplayed={3}
-        pageCount={pageCount}
+        pageCount={pageCount || 0}
         previousLabel="<"
         renderOnZeroPageCount={null}
         className="flex justify-center gap-4 items-center mt-4 cursor-pointe "
